@@ -53,7 +53,46 @@ fun main(){
 
 }
 
-//Funciones
+
+//Clases
+//COnstructor primario se pone despues de poner la clase
+//init --> bloque de codigo del constructor primario
+
+abstract class NUmerosJava{
+    protected val numeroUno: Int
+    private val numeroDos: Int
+
+    constructor(
+        uno: Int,
+        dos: Int
+    ){//Bloque de codigo del constructor
+        this.numeroUno = uno
+        this.numeroDos = dos
+    }
+}
+
+abstract class Numeros(// CONTRUCTOR PRIMARIO
+    //Ejemplo:
+    //unoProp: Int, //(parametro (sin modificador de acceso))
+    //private var uno: Int, //propiedd publica clase numeros.uno
+    //var uno: Int, //Propiedad de la clase (por defecto es PUBLIC)
+    //public var uno: Int,
+    //Propiedad de la clase protected numeros.numeroUno
+    protected val numeroUno: Int,
+    //Propiedad de la clase protected numeros,numeroDos
+    protected val numeroDos: Int,
+){
+    //var cedula: string = "" (public es por defecto)
+    //private valorCalculado: Int = 0 (private)
+
+    init {//Bloque codifo contructor primario
+        this.numeroUno; this.numeroDos; //this es opcional
+        numeroUno; numeroDos;// sin el this es lo mismo
+        println("Inicializando")
+    }
+}
+
+//FuncionesSS
 //Unit --> void en kotlin
 //Double? --> ayuda al programado que la variable puede ser null, a este tipo de variable se lo llama nullable
 // se puede hacer nullable a cualquier tipo de variable
