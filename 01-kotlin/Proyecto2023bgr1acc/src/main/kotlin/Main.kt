@@ -32,11 +32,25 @@ fun main(){
     val coqueteo = if (estadoCivilWhen == "S") "Si" else "No"
 
 
+    //ejemplo calculo de sueldo
+    //parmetos nombrados: podemos enviar los parametros con el nombre
+    calcularSueldo(10.00)
+    calcularSueldo(10.00, 15.00)
+    calcularSueldo(10.00, 12.00, 20.00)
+
+    calcularSueldo(sueldo = 10.00)
+    calcularSueldo(sueldo = 10.00, tasa = 15.00)
+    calcularSueldo(sueldo = 10.00, tasa = 12.00, bonoEspecial = 20.00)
+
+    calcularSueldo(sueldo = 10.00, bonoEspecial = 20.00)
+    calcularSueldo(10.00, bonoEspecial = 20.00)
+
+    calcularSueldo(bonoEspecial = 20.00, sueldo = 10.00, tasa = 14.00)
 
 
 
-    //Classes Java
-    val fechaNacimiento: Date = Date()
+
+
 }
 
 //Funciones
@@ -63,3 +77,4 @@ fun calcularSueldo(
         return sueldo * (100/tasa ) + bonoEspecial
     }
 }
+
