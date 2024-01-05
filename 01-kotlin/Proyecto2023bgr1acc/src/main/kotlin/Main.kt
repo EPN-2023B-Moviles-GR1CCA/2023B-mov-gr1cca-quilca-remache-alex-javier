@@ -118,6 +118,32 @@ class Suma( // Constructor Primario Suma
         if (dos == null) 0 else uno
     )
     // Si no lo necesitamos al bloque de codigo "{}" lo omitimos
+
+    constructor(//  cuarto constructor
+        uno: Int?, // parametros
+        dos: Int? // parametros
+    ) : this(  // llamada constructor primario
+        if (uno == null) 0 else uno,
+        if (dos == null) 0 else uno
+    )
+
+    // public por defecto, o usar private o protected
+    public fun sumar(): Int {
+        val total = numeroUno + numeroDos
+        agregarHistorial(total)
+        return total
+    }
+    companion object { // Atributos y Metodos "Compartidos"
+        // entre las instancias
+        val pi = 3.14
+        fun elevarAlCuadrado(num: Int): Int {
+            return num * num
+        }
+        val historialSumas = arrayListOf<Int>()
+        fun agregarHistorial(valorNuevaSuma:Int){
+            historialSumas.add(valorNuevaSuma)
+        }
+    }
 }
 
 //FuncionesSS
