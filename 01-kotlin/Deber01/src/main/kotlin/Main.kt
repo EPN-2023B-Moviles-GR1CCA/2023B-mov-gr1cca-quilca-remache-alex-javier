@@ -108,6 +108,7 @@ fun main() {
                             print(actor)
                         }
                         2 -> {
+                            println(System.getProperty("user.dir"))
                             val consulta = Actor.read()
                             if(consulta.isEmpty()){
                                 println()

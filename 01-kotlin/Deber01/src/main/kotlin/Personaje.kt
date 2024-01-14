@@ -14,7 +14,7 @@ data class Personaje(
     companion object {
         private val gson = Gson()
         private val actorType = object : TypeToken<List<Personaje>>() {}.type
-        val json : String = "/home/alexquilca/Documentos/personajes.json"
+        val json : String = "personajes.json"
         val personajes: MutableList<Personaje> = read().toMutableList()
 
         fun create(nombre: String,
