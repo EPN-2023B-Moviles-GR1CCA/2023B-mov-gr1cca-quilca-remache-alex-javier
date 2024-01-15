@@ -74,6 +74,36 @@ class MainActivity : ComponentActivity() {
             .setOnClickListener {
                 irActividad(BListView::class.java)
             }
+
+        val botonIntentImplicito = findViewById<Button>(
+            R.id.btn_ir_intent_implicito)
+        botonIntentImplicito
+            .setOnClickListener {
+                val intentConRespuesta = Intent(
+                    Intent.ACTION_PICK,
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+                )
+                callbackIntentImplicitoTelefono.launch(intentConRespuesta)
+            }
+
+        val botonIntentExplicito = findViewById<Button>(
+            R.id.btn_ir_intent_explicito)
+        botonIntentExplicito
+            .setOnClickListener {
+                abrirActividadConParametros(
+                    CIntentExplicitoParametros::class.java)
+            }
+    }//Termina onCreate
+
+    fun abrirActividadConParametros(
+        clase: Class<*>
+    ){
+        val intentExplicito = Intent(this, clase)
+        // Enviar parametros (solamente variables primitivas)
+        intentExplicito.putExtra("nombre", "Adrian")
+        intentExplicito.putExtra("apellido", "Eguez")
+        intentExplicito.putExtra("edad", 34)
+        callbackContenidoIntentExplicito.launch(intentExplicito)
     }
 
     fun irActividad(
