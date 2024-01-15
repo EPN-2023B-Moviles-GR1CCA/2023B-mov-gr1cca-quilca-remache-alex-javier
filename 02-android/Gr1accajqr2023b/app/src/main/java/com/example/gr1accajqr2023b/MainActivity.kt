@@ -63,6 +63,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         val botonACicloVida = findViewById<Button>(R.id.btn_ciclo_vida)
         botonACicloVida
             .setOnClickListener {
@@ -92,6 +93,12 @@ class MainActivity : ComponentActivity() {
             .setOnClickListener {
                 abrirActividadConParametros(
                     CIntentExplicitoParametros::class.java)
+            }
+
+        val botonSqlite = findViewById<Button>(R.id.btn_sqlite)
+        botonSqlite
+            .setOnClickListener {
+                irActividad(ECrudEntrenador::class.java)
             }
     }//Termina onCreate
 

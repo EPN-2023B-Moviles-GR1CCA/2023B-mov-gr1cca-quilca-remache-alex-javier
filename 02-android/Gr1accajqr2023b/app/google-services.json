@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "175052947705",
+    "project_id": "b2023-gr1acc-ajqr",
+    "storage_bucket": "b2023-gr1acc-ajqr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175052947705:android:70a0a1c8d80bffa969e228",
+        "android_client_info": {
+          "package_name": "com.example.gr1accajqr2023b"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnW9TNMTAZCrfGOtpw2hsEYIfP78MhsK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
