@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
                 irActividad(BListView::class.java)
             }
     }
-    
+
     fun irActividad(
         clase: Class<*>
     ){
