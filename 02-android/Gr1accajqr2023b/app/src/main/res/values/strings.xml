@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">Gr1accajqr2023b</string>
+    <string name="app_name" translatable="false">Gr1accajqr2023b</string>
     <string name="texto_saludo">Good Night PORT</string>
+
+    <string-array name="string_array_opciones_dialogo">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+    </string-array>
 </resources>
