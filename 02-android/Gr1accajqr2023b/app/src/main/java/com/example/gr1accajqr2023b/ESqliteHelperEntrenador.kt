@@ -30,6 +30,7 @@ class ESqliteHelperEntrenador(
                            p2: Int) {}
 
 
+
     fun crearEntrenador(
         nombre: String,
         descripcion: String
@@ -101,7 +102,6 @@ class ESqliteHelperEntrenador(
             scriptConsultaLectura, // Consulta
             parametrosConsultaLectura, // Parametros
         )
-        //logica de busqueda
         val existeUsuario = resultadoConsultaLectura.moveToFirst()
         val usuarioEncontrado = BEntrenador(0, "" , "")
         // val arreglo = arrayListOf<BEntrenador>()
