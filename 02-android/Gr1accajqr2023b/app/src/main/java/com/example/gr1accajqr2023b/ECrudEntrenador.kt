@@ -10,6 +10,7 @@ class ECrudEntrenador : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ecrud_entrenador)
+
         // Logica Buscar Entrenador
         val botonBuscarBDD = findViewById<Button>(R.id.btn_buscar_bdd)
         botonBuscarBDD
@@ -18,7 +19,7 @@ class ECrudEntrenador : AppCompatActivity() {
                 val id = findViewById<EditText>(R.id.input_id)
                 val nombre = findViewById<EditText>(R.id.input_nombre)
                 val descripcion = findViewById<EditText>(
-                    R.id.input_descripcion
+                    R.id.input_nombre
                 )
                 // Busqueda en la BDD Sqlite
                 val entrenador = EBaseDeDatos.tablaEntrenador!!
@@ -35,11 +36,12 @@ class ECrudEntrenador : AppCompatActivity() {
                 mostrarSnackbar("Usu. encontrado")
             }
 
+        //Logica Crear Entrenado
         val botonCrearBDD = findViewById<Button>(R.id.btn_crear_bdd)
         botonCrearBDD
             .setOnClickListener {
                 val nombre = findViewById<EditText>(R.id.input_nombre)
-                val descripcion = findViewById<EditText>(R.id.input_descripcion)
+                val descripcion = findViewById<EditText>(R.id.input_nombre)
                 val respuesta = EBaseDeDatos
                     .tablaEntrenador!!.crearEntrenador(
                         nombre.text.toString(),
@@ -47,12 +49,14 @@ class ECrudEntrenador : AppCompatActivity() {
                     )
                 if (respuesta) mostrarSnackbar("Ent. Creado")
             }
+
+        //Logica actualizar Entrenador
         val botonActualizarBDD = findViewById<Button>(R.id.btn_actualizar_bdd)
         botonActualizarBDD
             .setOnClickListener {
                 val id = findViewById<EditText>(R.id.input_id)
                 val nombre = findViewById<EditText>(R.id.input_nombre)
-                val descripcion = findViewById<EditText>(R.id.input_descripcion)
+                val descripcion = findViewById<EditText>(R.id.input_nombre)
                 val respuesta = EBaseDeDatos.tablaEntrenador!!.actualizarEntrenadorFormulario(
                     nombre.text.toString(),
                     descripcion.text.toString(),
@@ -61,7 +65,7 @@ class ECrudEntrenador : AppCompatActivity() {
                 if (respuesta) mostrarSnackbar("Usu. Actualizado")
             }
 
-
+        //Logica eliminar entrenador
         val botonEliminarBDD = findViewById<Button>(
             R.id.btn_eliminar_bdd
         )
