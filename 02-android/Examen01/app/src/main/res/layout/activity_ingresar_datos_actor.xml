@@ -95,7 +95,7 @@
         android:layout_marginTop="64dp"
         android:background="@drawable/button_selector"
         android:padding="10dp"
-        android:text="Crear Actor"
+        android:text="CREAR ACTOR"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/input_altura_actor"
         app:layout_constraintStart_toStartOf="@+id/input_altura_actor"

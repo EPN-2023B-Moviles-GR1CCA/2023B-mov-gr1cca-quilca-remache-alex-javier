@@ -29,9 +29,8 @@
         android:id="@+id/lv_list_view_actor"
         android:layout_width="321dp"
         android:layout_height="362dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtActor" />
 
@@ -42,7 +41,7 @@
         android:layout_marginTop="52dp"
         android:background="@drawable/button_selector"
         android:padding="10dp"
-        android:text="Nuevo Autor"
+        android:text="Nuevo Actor"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/lv_list_view_actor"
         app:layout_constraintHorizontal_bias="0.502"

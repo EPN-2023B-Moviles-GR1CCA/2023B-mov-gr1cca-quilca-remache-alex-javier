@@ -13,10 +13,22 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
+            android:name=".EditarPersonajeAct"
+            android:exported="false" />
+        <activity
+            android:name=".IngresarDatosPersonajeAct"
+            android:exported="false" />
+        <activity
+            android:name=".EditarActorAct"
+            android:exported="false" />
+        <activity
             android:name=".IngresarDatosActorAct"
             android:exported="false" />
         <activity
             android:name=".ActorAct"
+            android:exported="false" />
+        <activity
+            android:name=".PersonajeAct"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
