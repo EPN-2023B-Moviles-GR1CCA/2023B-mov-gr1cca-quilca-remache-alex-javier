@@ -10,22 +10,21 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ListView
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 
-class PersonajeAct : AppCompatActivity() {
+class ActorAct() : AppCompatActivity() {
 
-    private lateinit var adaptador: ArrayAdapter<Personaje>
+    private lateinit var adaptador: ArrayAdapter<Actor>
     private lateinit var listView: ListView
-    private var idActor: Int = 0
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_personaje)
+        setContentView(R.layout.activity_actor)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         startForResult =
@@ -35,30 +34,18 @@ class PersonajeAct : AppCompatActivity() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     val data: Intent? = result.data
                     val nombre = data?.getStringExtra("nombre")
-                    mostrarSnackbar("El personaje \"$nombre\" ha sido modificado")
+                    mostrarSnackbar("El actor $nombre ha sido modificado")
                 }
             }
 
-        idActor = intent.getIntExtra("idActor", 0)
-        val nombreActor = intent.getStringExtra("nombreActor")
-
-        val textViewActorPersonaje = findViewById<TextView>(R.id.textView_actor_personaje)
-        textViewActorPersonaje.text = nombreActor
-
-        listView = findViewById<ListView>(R.id.lv_list_view_personaje)
+        listView = findViewById<ListView>(R.id.lv_list_view_actor)
         adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf())
         listView.adapter = adaptador
 
-
-        val botonNuevoPersonaje = findViewById<Button>(R.id.btn_nuevo_personaje)
-        botonNuevoPersonaje.setOnClickListener{
-            val intent = Intent(this, IngresarDatosPersonajeAct::class.java)
-            intent.putExtra("idActor",idActor)
-            startActivity(intent)
+        val botonNuevoActor = findViewById<Button>(R.id.btn_nuevo_actor)
+        botonNuevoActor.setOnClickListener {
+            irActividad(IngresarDatosActorAct::class.java)
         }
-
-
-
 
         registerForContextMenu(listView)
     }
@@ -77,31 +64,37 @@ class PersonajeAct : AppCompatActivity() {
         // Llenamos las opciones del menu
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
-        if (menu != null) {
-            menu.findItem(R.id.mi_verPersonajes).isVisible = false
-        }
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.mi_editar ->{
                 val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
-                val personaje = listView.adapter.getItem(info.position) as Personaje
-                val intent = Intent(this, EditarPersonajeAct::class.java)
-                intent.putExtra("id", personaje.id)
-                intent.putExtra("nombre", personaje.nombre)
-                intent.putExtra("fecha", personaje.fecha)
-                intent.putExtra("pelicula", personaje.pelicula)
-                intent.putExtra("idActor", personaje.actor_id)
+                val actor = listView.adapter.getItem(info.position) as Actor
+                val intent = Intent(this, EditarActorAct::class.java)
+                intent.putExtra("id", actor.id)
+                intent.putExtra("nombre", actor.nombre)
+                intent.putExtra("fecha", actor.fecha)
+                intent.putExtra("casado", actor.casado)
+                intent.putExtra("altura", actor.altura)
                 startForResult.launch(intent)
                 return true
             }
             R.id.mi_eliminar ->{
                 val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
-                val personaje = listView.adapter.getItem(info.position) as Personaje
-                personaje.eliminarPersonaje(this);
-                mostrarSnackbar("Personaje \"${personaje.nombre}\" con id = ${personaje.id} ha sido eliminado")
+                val actor = listView.adapter.getItem(info.position) as Actor
+                actor.eliminarActor(this);
+                mostrarSnackbar("Actor \"${actor.nombre}\" con id = ${actor.id} ha sido eliminado")
                 actualizarListView()
+                return true
+            }
+            R.id.mi_verPersonajes ->{
+                val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
+                val actor = listView.adapter.getItem(info.position) as Actor
+                val intent = Intent(this, PersonajeAct::class.java)
+                intent.putExtra("idActor", actor.id)
+                intent.putExtra("nombreActor", actor.nombre)
+                startActivity(intent)
                 return true
             }
             else -> super.onContextItemSelected(item)
@@ -118,10 +111,17 @@ class PersonajeAct : AppCompatActivity() {
         }
     }
 
+    fun irActividad(
+        clase: Class<*>
+    ){
+        val intent = Intent(this, clase)
+        startActivity(intent)
+    }
+
     fun mostrarSnackbar(texto:String){
         Snackbar
             .make(
-                findViewById(R.id.lv_list_view_personaje), // view
+                findViewById(R.id.lv_list_view_actor), // view
                 texto, // texto
                 Snackbar.LENGTH_LONG // tiempo
             )
@@ -129,14 +129,10 @@ class PersonajeAct : AppCompatActivity() {
     }
 
     fun actualizarListView(){
-        val personajes = Personaje.obtenerPersonajes(this, idActor)
+        val actores = Actor.obtenerActores(this)
         adaptador.clear()
-        if (personajes.isNotEmpty()) {
-            adaptador.addAll(personajes)
-            adaptador.notifyDataSetChanged()
-        } else {
-            mostrarSnackbar("No hay personajes para este Actor")
-        }
+        adaptador.addAll(actores)
+        adaptador.notifyDataSetChanged()
     }
 
 }
