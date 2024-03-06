@@ -15,7 +15,8 @@ import android.widget.ListView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
-
+import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
 class ActorAct() : AppCompatActivity() {
 
     private lateinit var adaptador: ArrayAdapter<Actor>
@@ -83,9 +84,17 @@ class ActorAct() : AppCompatActivity() {
             R.id.mi_eliminar ->{
                 val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
                 val actor = listView.adapter.getItem(info.position) as Actor
-                actor.eliminarActor(this);
-                mostrarSnackbar("Actor \"${actor.nombre}\" con id = ${actor.id} ha sido eliminado")
-                actualizarListView()
+                lifecycleScope.launch {
+                    val respuesta = actor.eliminarActor()
+                    withContext(Dispatchers.Main) {
+                        if (respuesta) {
+                            mostrarSnackbar("Actor \"${actor.nombre}\" con id = ${actor.id} ha sido eliminado")
+                            actualizarListView()
+                        } else {
+                            mostrarSnackbar("Error al eliminar el actor")
+                        }
+                    }
+                }
                 return true
             }
             R.id.mi_verPersonajes ->{
@@ -129,10 +138,18 @@ class ActorAct() : AppCompatActivity() {
     }
 
     fun actualizarListView(){
-        val actores = Actor.obtenerActores(this)
-        adaptador.clear()
-        adaptador.addAll(actores)
-        adaptador.notifyDataSetChanged()
+        lifecycleScope.launch {
+            val actores = Actor.obtenerActores()
+            withContext(Dispatchers.Main) {
+                adaptador.clear()
+                if (actores.isNotEmpty()) {
+                    adaptador.addAll(actores)
+                    adaptador.notifyDataSetChanged()
+                } else {
+                    mostrarSnackbar("No hay actores disponibles")
+                }
+            }
+        }
     }
 
 }

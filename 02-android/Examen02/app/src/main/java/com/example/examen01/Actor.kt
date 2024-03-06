@@ -2,84 +2,72 @@ package com.example.examen01
 
 import android.content.ContentValues
 import android.content.Context
+import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
 import java.io.Serializable
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 class Actor(
-    val id: Int?,
+    val id: String?,
     val nombre: String,
     val fecha: String,
     val casado: Boolean,
     val altura: Float,
-    //val context: Context?
 ) {
-
     companion object {
-        fun obtenerActores(context: Context): List<Actor> {
-            val db = SQLiteHelper(context).readableDatabase
-            val cursor = db.query("ACTOR", null, null, null, null, null, null)
-
-            val actores = mutableListOf<Actor>()
-            with(cursor) {
-                while (moveToNext()) {
-                    val id = getInt(getColumnIndexOrThrow("id"))
-                    val nombre = getString(getColumnIndexOrThrow("nombre"))
-                    val fecha = getString(getColumnIndexOrThrow("fecha"))
-                    val casado =
-                        getInt(getColumnIndexOrThrow("casado")) != 0 // Convertir Int a Boolean
-                    val altura = getFloat(getColumnIndexOrThrow("altura"))
-                    actores.add(Actor(id, nombre, fecha, casado, altura))
-                }
+        suspend fun obtenerActores(): List<Actor> {
+            return try {
+                val db = FirebaseFirestore.getInstance()
+                val snapshot = db.collection("actores").get().await()
+                snapshot.documents.mapNotNull { it.toObject(Actor::class.java) }
+            } catch (e: Exception) {
+                Log.e("Actor", "Error getting actors", e)
+                emptyList()
             }
-            cursor.close()
-            db.close()
-            return actores
         }
     }
 
-    fun crearActor(context: Context): Boolean {
-        val db = SQLiteHelper(context).writableDatabase
-        val valores = ContentValues()
-        valores.put("id", id)
-        valores.put("nombre", this.nombre)
-        valores.put("fecha", this.fecha)
-        valores.put("casado", if (this.casado) 1 else 0)
-        valores.put("altura", this.altura)
-        val crear = db.insert(
-            "ACTOR",
-            null,
-            valores
+    suspend fun crearActor(): Boolean {
+        val db = FirebaseFirestore.getInstance()
+        val actorMap = hashMapOf(
+            "nombre" to this.nombre,
+            "fecha" to this.fecha,
+            "casado" to this.casado,
+            "altura" to this.altura
         )
-        db.close()
-        return crear.toInt() != -1
+        return try {
+            db.collection("actores").add(actorMap).await()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
-    fun eliminarActor(context: Context): Boolean {
-        val db = SQLiteHelper(context).writableDatabase
-        val seleccion = arrayOf(this.id.toString())
-        val eliminar = db.delete("ACTOR", "id=?", seleccion)
-        db.close()
-        return eliminar != -1
+    suspend fun eliminarActor(): Boolean {
+        val db = FirebaseFirestore.getInstance()
+        return try {
+            db.collection("actores").document(this.id!!).delete().await()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
-    fun actualizarActor(context: Context): Boolean {
-        val db = SQLiteHelper(context).writableDatabase
-        val seleccion = arrayOf(this.id.toString())
-        val valores = ContentValues()
-        valores.put("nombre", this.nombre)
-        valores.put("fecha", this.fecha)
-        valores.put("casado", if (this.casado) 1 else 0)
-        valores.put("altura", this.altura)
-        val actulizar = db.update("ACTOR", valores, "id=?", seleccion)
-        db.close()
-        return actulizar != -1
-
+    suspend fun actualizarActor(): Boolean {
+        val db = FirebaseFirestore.getInstance()
+        val actorMap = hashMapOf(
+            "nombre" to this.nombre,
+            "fecha" to this.fecha,
+            "casado" to this.casado,
+            "altura" to this.altura
+        )
+        return try {
+            db.collection("actores").document(this.id!!).set(actorMap).await()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
-
-    override fun toString(): String {
-        val casado = if(this.casado) "si" else "no"
-        return "ID: $id\nNombre: $nombre\nFecha: $fecha" +
-                "\nCasado: $casado\nAltura: $altura"
-    }
-
-
 }

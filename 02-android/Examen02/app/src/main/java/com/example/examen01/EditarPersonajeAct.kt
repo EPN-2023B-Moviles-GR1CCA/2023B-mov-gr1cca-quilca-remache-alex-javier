@@ -1,5 +1,6 @@
 package com.example.examen01
 
+
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
 import java.util.Locale
 
 class EditarPersonajeAct : AppCompatActivity() {
@@ -21,8 +24,8 @@ class EditarPersonajeAct : AppCompatActivity() {
         val NombrePersonaje = findViewById<EditText>(R.id.edit_nombre_personaje)
         val FechaPersonaje = findViewById<EditText>(R.id.edit_fecha_personaje)
         val PeliculaPersonaje = findViewById<EditText>(R.id.edit_pelicula_personaje)
-        val IdPersonaje = intent.getIntExtra("id",0)
-        val IdActor = intent.getIntExtra("idActor", 0)
+        val IdPersonaje = intent.getStringExtra("id")
+        val IdActor = intent.getStringExtra("idActor").toString()
 
         textViewPersonaje.text = intent.getStringExtra("nombre")
         NombrePersonaje.setText(intent.getStringExtra("nombre"))
@@ -45,12 +48,16 @@ class EditarPersonajeAct : AppCompatActivity() {
                     PeliculaPersonaje.text.toString(),
                     IdActor
                 )
-                val respuesta = personaje.actualizarPersonaje(this)
-                if (respuesta) {
-                    val intent = Intent()
-                    intent.putExtra("nombre",personaje.nombre)
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                lifecycleScope.launch {
+                    val respuesta = personaje.actualizarPersonaje()
+                    withContext(Dispatchers.Main) {
+                        if (respuesta) {
+                            val intent = Intent()
+                            intent.putExtra("nombre",personaje.nombre)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        }
+                    }
                 }
             }
         }

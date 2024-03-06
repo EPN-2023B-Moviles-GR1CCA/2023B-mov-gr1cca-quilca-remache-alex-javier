@@ -10,7 +10,8 @@ import android.widget.EditText
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
-
+import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
 class EditarActorAct : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +24,7 @@ class EditarActorAct : AppCompatActivity() {
         val FechaActor = findViewById<EditText>(R.id.edit_fecha_actor)
         val CasadoActor = findViewById<EditText>(R.id.edit_casado_actor)
         val AlturaActor = findViewById<EditText>(R.id.edit_altura_actor)
-        val IdActor = intent.getIntExtra("id",0)
+        val IdActor = intent.getStringExtra("id")
 
         textViewActor.text = intent.getStringExtra("nombre")
         NombreActor.setText(intent.getStringExtra("nombre"))
@@ -59,12 +60,18 @@ class EditarActorAct : AppCompatActivity() {
                     casadoBooleano,
                     AlturaActor.text.toString().toFloat()
                 )
-                val respuesta = actor.actualizarActor(this)
-                if (respuesta) {
-                    val intent = Intent()
-                    intent.putExtra("nombre",actor.nombre)
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                lifecycleScope.launch {
+                    val respuesta = actor.actualizarActor()
+                    withContext(Dispatchers.Main) {
+                        if (respuesta) {
+                            val intent = Intent()
+                            intent.putExtra("nombre",actor.nombre)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        } else {
+                            mostrarSnackbar("Error al actualizar el actor")
+                        }
+                    }
                 }
             }
         }

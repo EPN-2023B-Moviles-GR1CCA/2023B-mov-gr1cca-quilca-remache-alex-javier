@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
+import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
 
 class IngresarDatosActorAct : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +42,19 @@ class IngresarDatosActorAct : AppCompatActivity() {
                     casadoBooleano,
                     altura.text.toString().toFloat()
                 )
-                val respuesta = actor.crearActor(this)
-                if (respuesta) {
-                    mostrarSnackbar("Actor: \"${actor.nombre}\" ha sido creado")
-                    nombre.setText("")
-                    fecha.setText("")
-                    findViewById<EditText>(R.id.input_casado_actor).setText("")
-                    altura.setText("")
+                lifecycleScope.launch {
+                    val respuesta = actor.crearActor()
+                    withContext(Dispatchers.Main) {
+                        if (respuesta) {
+                            mostrarSnackbar("Actor: \"${actor.nombre}\" ha sido creado")
+                            nombre.setText("")
+                            fecha.setText("")
+                            findViewById<EditText>(R.id.input_casado_actor).setText("")
+                            altura.setText("")
+                        } else {
+                            mostrarSnackbar("Error al crear el actor")
+                        }
+                    }
                 }
             }
         }

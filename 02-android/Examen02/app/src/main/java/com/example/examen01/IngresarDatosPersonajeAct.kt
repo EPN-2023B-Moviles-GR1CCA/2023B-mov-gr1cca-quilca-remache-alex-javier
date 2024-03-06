@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 
@@ -14,7 +16,7 @@ class IngresarDatosPersonajeAct : AppCompatActivity() {
         setContentView(R.layout.activity_ingresar_datos_personaje)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val idActor = intent.getIntExtra("idActor", 0)
+        val idActor = intent.getStringExtra("idActor").toString()
 
         val botonCrearPersonaje = findViewById<Button>(R.id.btn_crear_personaje)
         botonCrearPersonaje.setOnClickListener {
@@ -35,12 +37,16 @@ class IngresarDatosPersonajeAct : AppCompatActivity() {
                     pelicula.text.toString(),
                     idActor
                 )
-                val respuesta = personaje.crearPersonaje(this)
-                if (respuesta) {
-                    mostrarSnackbar("Personaje: \"${personaje.nombre}\" ha sido creado")
-                    nombre.setText("")
-                    fecha.setText("")
-                    pelicula.setText("")
+                lifecycleScope.launch {
+                    val respuesta = personaje.crearPersonaje()
+                    withContext(Dispatchers.Main) {
+                        if (respuesta) {
+                            mostrarSnackbar("Personaje: \"${personaje.nombre}\" ha sido creado")
+                            nombre.setText("")
+                            fecha.setText("")
+                            pelicula.setText("")
+                        }
+                    }
                 }
             }
         }

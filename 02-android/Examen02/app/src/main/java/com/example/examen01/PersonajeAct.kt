@@ -14,13 +14,15 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 
 class PersonajeAct : AppCompatActivity() {
 
     private lateinit var adaptador: ArrayAdapter<Personaje>
     private lateinit var listView: ListView
-    private var idActor: Int = 0
+    private var idActor: String = ""
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +41,8 @@ class PersonajeAct : AppCompatActivity() {
                 }
             }
 
-        idActor = intent.getIntExtra("idActor", 0)
+        val idAct = intent.getStringExtra("idActor")
+        this.idActor = idAct.toString()
         val nombreActor = intent.getStringExtra("nombreActor")
 
         val textViewActorPersonaje = findViewById<TextView>(R.id.textView_actor_personaje)
@@ -99,9 +102,13 @@ class PersonajeAct : AppCompatActivity() {
             R.id.mi_eliminar ->{
                 val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
                 val personaje = listView.adapter.getItem(info.position) as Personaje
-                personaje.eliminarPersonaje(this);
-                mostrarSnackbar("Personaje \"${personaje.nombre}\" con id = ${personaje.id} ha sido eliminado")
-                actualizarListView()
+                lifecycleScope.launch {
+                    personaje.eliminarPersonaje()
+                    withContext(Dispatchers.Main) {
+                        mostrarSnackbar("Personaje \"${personaje.nombre}\" con id = ${personaje.id} ha sido eliminado")
+                        actualizarListView()
+                    }
+                }
                 return true
             }
             else -> super.onContextItemSelected(item)
@@ -128,14 +135,18 @@ class PersonajeAct : AppCompatActivity() {
             .show()
     }
 
-    fun actualizarListView(){
-        val personajes = Personaje.obtenerPersonajes(this, idActor)
-        adaptador.clear()
-        if (personajes.isNotEmpty()) {
-            adaptador.addAll(personajes)
-            adaptador.notifyDataSetChanged()
-        } else {
-            mostrarSnackbar("No hay personajes para este Actor")
+    fun actualizarListView() {
+        lifecycleScope.launch {
+            val personajes = Personaje.obtenerPersonajes(idActor)
+            withContext(Dispatchers.Main) {
+                adaptador.clear()
+                if (personajes.isNotEmpty()) {
+                    adaptador.addAll(personajes)
+                    adaptador.notifyDataSetChanged()
+                } else {
+                    mostrarSnackbar("No hay personajes para este Actor")
+                }
+            }
         }
     }
 

@@ -6,13 +6,9 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var dbHelper: SQLiteHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        dbHelper = SQLiteHelper(this)
 
         val botonIniciar = findViewById<Button>(R.id.btn_iniciar)
         botonIniciar.setOnClickListener {
