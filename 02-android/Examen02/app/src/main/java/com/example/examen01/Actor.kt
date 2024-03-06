@@ -10,27 +10,36 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 class Actor(
-    val id: String?,
-    val nombre: String,
-    val fecha: String,
-    val casado: Boolean,
-    val altura: Float,
+    val id: String? = null,
+    val nombre: String = "",
+    val fecha: String = "",
+    val casado: Boolean = false,
+    val altura: Float = 0f,
 ) {
     companion object {
         suspend fun obtenerActores(): List<Actor> {
+            val actores = mutableListOf<Actor>()
             return try {
-                val db = FirebaseFirestore.getInstance()
-                val snapshot = db.collection("actores").get().await()
-                snapshot.documents.mapNotNull { it.toObject(Actor::class.java) }
+                val db = Firebase.firestore
+                val documents = db.collection("actores").get().await()
+                for (document in documents) {
+                    val id = document.id
+                    val nombre = document.getString("nombre")!!
+                    val fecha = document.getString("fecha")!!
+                    val casado = document.getBoolean("casado")!!
+                    val altura = document.getDouble("altura")!!.toFloat()
+                    actores.add(Actor(id, nombre, fecha, casado, altura))
+                }
+                actores
             } catch (e: Exception) {
-                Log.e("Actor", "Error getting actors", e)
+                Log.e("Actor", "Error al obtener los actores", e)
                 emptyList()
             }
         }
     }
 
     suspend fun crearActor(): Boolean {
-        val db = FirebaseFirestore.getInstance()
+        val db = Firebase.firestore
         val actorMap = hashMapOf(
             "nombre" to this.nombre,
             "fecha" to this.fecha,
@@ -46,8 +55,18 @@ class Actor(
     }
 
     suspend fun eliminarActor(): Boolean {
-        val db = FirebaseFirestore.getInstance()
+        val db = Firebase.firestore
         return try {
+            val documents = db.collection("personajes")
+                .whereEqualTo("actor_id", this.id!!)
+                .get()
+                .await()
+
+            for (document in documents) {
+                db.collection("personajes").document(document.id).delete().await()
+            }
+
+            // Delete the actor
             db.collection("actores").document(this.id!!).delete().await()
             true
         } catch (e: Exception) {
@@ -56,7 +75,7 @@ class Actor(
     }
 
     suspend fun actualizarActor(): Boolean {
-        val db = FirebaseFirestore.getInstance()
+        val db = Firebase.firestore
         val actorMap = hashMapOf(
             "nombre" to this.nombre,
             "fecha" to this.fecha,
@@ -69,5 +88,11 @@ class Actor(
         } catch (e: Exception) {
             false
         }
+    }
+
+    override fun toString(): String {
+        val casado = if(this.casado) "si" else "no"
+        return "ID: $id\nNombre: $nombre\nFecha: $fecha" +
+                "\nCasado: $casado\nAltura: $altura"
     }
 }
