@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_editar_personaje"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditarPersonajeAct">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="91dp"
+        android:background="#2A65FF"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="Editar Personaje"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView_Personaje"
+        android:layout_width="319dp"
+        android:layout_height="101dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/edit_nombre_personaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:ems="10"
+        android:inputType="text"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_Personaje"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/textView_Personaje"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Personaje" />
+
+    <EditText
+        android:id="@+id/edit_fecha_personaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:ems="10"
+        android:inputType="text"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/edit_nombre_personaje"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edit_nombre_personaje"
+        app:layout_constraintTop_toBottomOf="@+id/edit_nombre_personaje" />
+
+    <EditText
+        android:id="@+id/edit_pelicula_personaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:ems="10"
+        android:inputType="text"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/edit_fecha_personaje"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edit_fecha_personaje"
+        app:layout_constraintTop_toBottomOf="@+id/edit_fecha_personaje" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:gravity="center"
+        android:text="Nombre"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_nombre_personaje"
+        app:layout_constraintEnd_toStartOf="@+id/edit_nombre_personaje"
+        app:layout_constraintHorizontal_bias="0.805"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_nombre_personaje"
+        app:layout_constraintVertical_bias="0.625" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="51dp"
+        android:layout_height="62dp"
+        android:layout_marginEnd="36dp"
+        android:gravity="center"
+        android:text="Fecha"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_fecha_personaje"
+        app:layout_constraintEnd_toStartOf="@+id/edit_fecha_personaje"
+        app:layout_constraintHorizontal_bias="0.794"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_fecha_personaje" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:text="Película"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_pelicula_personaje"
+        app:layout_constraintEnd_toStartOf="@+id/edit_pelicula_personaje"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_pelicula_personaje"
+        app:layout_constraintVertical_bias="0.625" />
+
+    <Button
+        android:id="@+id/btn_editar_personaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/button_selector"
+        android:padding="10dp"
+        android:text="EDITAR"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/edit_pelicula_personaje"
+        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintStart_toStartOf="@+id/edit_pelicula_personaje"
+        app:layout_constraintTop_toBottomOf="@+id/edit_pelicula_personaje" />
+</androidx.constraintlayout.widget.ConstraintLayout>
